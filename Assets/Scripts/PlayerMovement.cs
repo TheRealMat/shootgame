@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private Rigidbody2D rb2D;
-    private float walkSpeed = 70.0F;
-    private float rotationSpeed = 15.0F;
+    public Rigidbody2D rb2D;
+    public float walkSpeed = 70.0F;
+    public float rotationSpeed = 15.0F;
     private void Start()
     {
         rb2D = gameObject.GetComponent<Rigidbody2D>();
