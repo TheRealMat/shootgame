@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class WeaponAim : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class WeaponAim : MonoBehaviour
     public Transform firePoint;
     public int damage = 50;
     public LineRenderer lineRenderer;
+    public double inaccuracy = 5;
     private void Start()
     {
         parent = gameObject.transform.parent;
@@ -30,7 +32,6 @@ public class WeaponAim : MonoBehaviour
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
         transform.position = Vector2.MoveTowards(new Vector2(parent.position.x, parent.position.y), new Vector2(point.x, point.y), 0.3F);
-
 
 
 
@@ -60,9 +61,15 @@ public class WeaponAim : MonoBehaviour
     {
         parent.Rotate(0f, 180f, 0f);
     }
+    public double GetRandomNumberInRange(double minNumber, double maxNumber)
+    {
+        return (new System.Random().NextDouble() * (maxNumber - minNumber) + minNumber);
+    }
+
     IEnumerator Shoot()
     {
-
+        Quaternion previousAngle = firePoint.rotation;
+        firePoint.Rotate(0, 0, (float) GetRandomNumberInRange(-inaccuracy, inaccuracy), Space.World);
         RaycastHit2D hitInfo = Physics2D.Raycast(firePoint.position, firePoint.right);
         if (hitInfo)
         {
@@ -82,9 +89,10 @@ public class WeaponAim : MonoBehaviour
             lineRenderer.SetPosition(0, firePoint.localPosition);
             lineRenderer.SetPosition(1, firePoint.position + firePoint.right * 100);
         }
-
+        firePoint.rotation = previousAngle;
         lineRenderer.enabled = true;
         yield return new WaitForSeconds(0.02f);
         lineRenderer.enabled = false;
+
     }
 }
