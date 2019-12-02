@@ -9,11 +9,15 @@ public class WeaponAim : MonoBehaviour
     private bool facingRight = false;
     private bool directionChanged = false;
     Transform parent;
+    public Transform firePoint;
+    public int damage = 50;
+    public LineRenderer lineRenderer;
     private void Start()
     {
         parent = gameObject.transform.parent;
         weaponSprite = GetComponent<SpriteRenderer>();
         playerSprite = parent.GetComponent<SpriteRenderer>();
+        lineRenderer.useWorldSpace = true;
 
     }
     void Update()
@@ -23,7 +27,6 @@ public class WeaponAim : MonoBehaviour
         // gets angle between mouse and player
         var angle = Mathf.Atan2(point.y - parent.position.y, point.x - parent.position.x) * Mathf.Rad2Deg;
 
-        //var angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
         transform.position = Vector2.MoveTowards(new Vector2(parent.position.x, parent.position.y), new Vector2(point.x, point.y), 0.3F);
@@ -31,7 +34,7 @@ public class WeaponAim : MonoBehaviour
 
 
 
-
+        // this is bad. rewrite
         if (point.x > parent.position.x)
         {
             facingRight = false;
@@ -39,21 +42,49 @@ public class WeaponAim : MonoBehaviour
         else
         {
             facingRight = true;
+            transform.Rotate(180f, 0f, 0f);
         }
         if (facingRight != directionChanged)
         {
             directionChanged = facingRight;
             FlipSprite();
         }
+
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            StartCoroutine(Shoot());
+        }
     }
     private void FlipSprite()
     {
-        weaponSprite.flipY = !weaponSprite.flipY;
+        parent.Rotate(0f, 180f, 0f);
+    }
+    IEnumerator Shoot()
+    {
 
-        playerSprite.flipX = !playerSprite.flipX;
-        if (playerSprite.flipX == true)
+        RaycastHit2D hitInfo = Physics2D.Raycast(firePoint.position, firePoint.right);
+        if (hitInfo)
         {
-            transform.position = new Vector2(transform.position.x + 0, transform.position.y);
+            Debug.Log("firepoint = " + firePoint.position);
+            Debug.Log("hitinfo.point = " + hitInfo.point);
+            DamageableScript hitThing = hitInfo.transform.GetComponent<DamageableScript>();
+            if (hitThing != null)
+            {
+
+                hitThing.TakeDamage(damage);
+            }
+            lineRenderer.SetPosition(0, firePoint.position);
+            lineRenderer.SetPosition(1, hitInfo.point);
         }
+        else
+        {
+            lineRenderer.SetPosition(0, firePoint.localPosition);
+            lineRenderer.SetPosition(1, firePoint.position + firePoint.right * 100);
+        }
+
+        lineRenderer.enabled = true;
+        yield return new WaitForSeconds(0.02f);
+        lineRenderer.enabled = false;
     }
 }
