@@ -16,6 +16,7 @@ public class WeaponAim : MonoBehaviour
     public double inaccuracy = 5;
     public bool isAuto = false;
     public double firingSpeed;
+    public SpriteRenderer muzzleFlash;
 
     private float lastFired;
     private void Start()
@@ -102,9 +103,11 @@ public class WeaponAim : MonoBehaviour
                 lineRenderer.SetPosition(1, firePoint.position + firePoint.right * 100);
             }
             firePoint.rotation = previousAngle;
+            muzzleFlash.enabled = true;
             lineRenderer.enabled = true;
             yield return new WaitForSeconds(0.02f);
             lineRenderer.enabled = false;
+            muzzleFlash.enabled = false;
         }
 
 
