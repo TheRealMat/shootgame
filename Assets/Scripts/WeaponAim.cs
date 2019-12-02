@@ -14,6 +14,10 @@ public class WeaponAim : MonoBehaviour
     public int damage = 50;
     public LineRenderer lineRenderer;
     public double inaccuracy = 5;
+    public bool isAuto = false;
+    public double firingSpeed;
+
+    private float lastFired;
     private void Start()
     {
         parent = gameObject.transform.parent;
@@ -51,8 +55,12 @@ public class WeaponAim : MonoBehaviour
             FlipSprite();
         }
 
+        if (Input.GetMouseButtonDown(0) && isAuto == false)
+        {
+            StartCoroutine(Shoot());
+        }
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButton(0) && isAuto == true)
         {
             StartCoroutine(Shoot());
         }
@@ -68,31 +76,37 @@ public class WeaponAim : MonoBehaviour
 
     IEnumerator Shoot()
     {
-        Quaternion previousAngle = firePoint.rotation;
-        firePoint.Rotate(0, 0, (float) GetRandomNumberInRange(-inaccuracy, inaccuracy), Space.World);
-        RaycastHit2D hitInfo = Physics2D.Raycast(firePoint.position, firePoint.right);
-        if (hitInfo)
+        if (Time.time - lastFired > 1 / firingSpeed)
         {
-            Debug.Log("firepoint = " + firePoint.position);
-            Debug.Log("hitinfo.point = " + hitInfo.point);
-            DamageableScript hitThing = hitInfo.transform.GetComponent<DamageableScript>();
-            if (hitThing != null)
-            {
+            lastFired = Time.time;
 
-                hitThing.TakeDamage(damage);
+            Quaternion previousAngle = firePoint.rotation;
+            firePoint.Rotate(0, 0, (float)GetRandomNumberInRange(-inaccuracy, inaccuracy), Space.World);
+            RaycastHit2D hitInfo = Physics2D.Raycast(firePoint.position, firePoint.right);
+            if (hitInfo)
+            {
+                Debug.Log("firepoint = " + firePoint.position);
+                Debug.Log("hitinfo.point = " + hitInfo.point);
+                DamageableScript hitThing = hitInfo.transform.GetComponent<DamageableScript>();
+                if (hitThing != null)
+                {
+
+                    hitThing.TakeDamage(damage);
+                }
+                lineRenderer.SetPosition(0, firePoint.position);
+                lineRenderer.SetPosition(1, hitInfo.point);
             }
-            lineRenderer.SetPosition(0, firePoint.position);
-            lineRenderer.SetPosition(1, hitInfo.point);
+            else
+            {
+                lineRenderer.SetPosition(0, firePoint.localPosition);
+                lineRenderer.SetPosition(1, firePoint.position + firePoint.right * 100);
+            }
+            firePoint.rotation = previousAngle;
+            lineRenderer.enabled = true;
+            yield return new WaitForSeconds(0.02f);
+            lineRenderer.enabled = false;
         }
-        else
-        {
-            lineRenderer.SetPosition(0, firePoint.localPosition);
-            lineRenderer.SetPosition(1, firePoint.position + firePoint.right * 100);
-        }
-        firePoint.rotation = previousAngle;
-        lineRenderer.enabled = true;
-        yield return new WaitForSeconds(0.02f);
-        lineRenderer.enabled = false;
+
 
     }
 }

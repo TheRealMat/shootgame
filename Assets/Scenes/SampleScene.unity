@@ -11874,6 +11874,8 @@ MonoBehaviour:
   damage: 50
   lineRenderer: {fileID: 1967541799}
   inaccuracy: 5
+  isAuto: 1
+  firingSpeed: 10
 --- !u!1 &875904550
 GameObject:
   m_ObjectHideFlags: 0
