@@ -2,13 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-
+// entire script should be separated into weapon things and movement things
 public class WeaponAim : MonoBehaviour
 {
-    private SpriteRenderer playerSprite;
-    private SpriteRenderer weaponSprite;
-    private bool facingRight = false;
-    private bool directionChanged = false;
+
     Transform parent;
     public Transform firePoint;
     public int damage = 50;
@@ -17,15 +14,20 @@ public class WeaponAim : MonoBehaviour
     public bool isAuto = false;
     public double firingSpeed;
     public SpriteRenderer muzzleFlash;
+    public GameObject weapon;
+    private Animator animator;
+    // ideally speed of the recoil animation should be tied to the firing speed somehow
+    private AnimationClip recoilAnim;
+    public bool facingRight = false;
+    private bool currentDirection = false;
+    private bool previousDirection;
 
     private float lastFired;
     private void Start()
     {
+        animator = weapon.GetComponent<Animator>();
         parent = gameObject.transform.parent;
-        weaponSprite = GetComponent<SpriteRenderer>();
-        playerSprite = parent.GetComponent<SpriteRenderer>();
         lineRenderer.useWorldSpace = true;
-
     }
     void Update()
     {
@@ -36,26 +38,8 @@ public class WeaponAim : MonoBehaviour
 
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
+        // needs some kind of offset to make it feel more natural
         transform.position = Vector2.MoveTowards(new Vector2(parent.position.x, parent.position.y), new Vector2(point.x, point.y), 0.3F);
-
-
-
-        // this is bad. rewrite
-        if (point.x > parent.position.x)
-        {
-            facingRight = false;
-        }
-        else
-        {
-            facingRight = true;
-            transform.Rotate(180f, 0f, 0f);
-        }
-        if (facingRight != directionChanged)
-        {
-            directionChanged = facingRight;
-            FlipSprite();
-        }
-
         if (Input.GetMouseButtonDown(0) && isAuto == false)
         {
             StartCoroutine(Shoot());
@@ -66,10 +50,10 @@ public class WeaponAim : MonoBehaviour
             StartCoroutine(Shoot());
         }
     }
-    private void FlipSprite()
-    {
-        parent.Rotate(0f, 180f, 0f);
-    }
+
+
+
+
     public double GetRandomNumberInRange(double minNumber, double maxNumber)
     {
         return (new System.Random().NextDouble() * (maxNumber - minNumber) + minNumber);
@@ -79,6 +63,7 @@ public class WeaponAim : MonoBehaviour
     {
         if (Time.time - lastFired > 1 / firingSpeed)
         {
+            animator.Play("RecoilAnim");
             lastFired = Time.time;
 
             Quaternion previousAngle = firePoint.rotation;
