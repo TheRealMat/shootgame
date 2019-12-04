@@ -18,9 +18,6 @@ public class WeaponAim : MonoBehaviour
     private Animator animator;
     // ideally speed of the recoil animation should be tied to the firing speed somehow
     private AnimationClip recoilAnim;
-    public bool facingRight = false;
-    private bool currentDirection = false;
-    private bool previousDirection;
 
     private float lastFired;
     private void Start()
@@ -38,6 +35,21 @@ public class WeaponAim : MonoBehaviour
 
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
+
+
+
+        // terrible implementation, fix asap
+        if (point.x < parent.position.x)
+        {
+            parent.GetComponent<SpriteRenderer>().flipX = true;
+            transform.Rotate(180, 0, 0);
+        }
+        else if (point.x > parent.position.x)
+        {
+            parent.GetComponent<SpriteRenderer>().flipX = false;
+            transform.Rotate(0, 0, 0);
+        }
+
         // needs some kind of offset to make it feel more natural
         transform.position = Vector2.MoveTowards(new Vector2(parent.position.x, parent.position.y), new Vector2(point.x, point.y), 0.3F);
         if (Input.GetMouseButtonDown(0) && isAuto == false)
@@ -49,6 +61,8 @@ public class WeaponAim : MonoBehaviour
         {
             StartCoroutine(Shoot());
         }
+
+
     }
 
 
