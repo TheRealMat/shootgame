@@ -19,6 +19,10 @@ public class WeaponAim : MonoBehaviour
     // ideally speed of the recoil animation should be tied to the firing speed somehow
     private AnimationClip recoilAnim;
 
+    public int magAmount;
+    public int MaxBulletsInMag;
+    public int currentBulletsInMag;
+
     private float lastFired;
     private void Start()
     {
@@ -61,7 +65,10 @@ public class WeaponAim : MonoBehaviour
         {
             StartCoroutine(Shoot());
         }
-
+        if (Input.GetKeyDown("r"))
+        {
+            Reload();
+        }
 
     }
 
@@ -75,40 +82,50 @@ public class WeaponAim : MonoBehaviour
 
     IEnumerator Shoot()
     {
-        if (Time.time - lastFired > 1 / firingSpeed)
+        if (currentBulletsInMag > 0)
         {
-            animator.Play("RecoilAnim");
-            lastFired = Time.time;
-
-            Quaternion previousAngle = firePoint.rotation;
-            firePoint.Rotate(0, 0, (float)GetRandomNumberInRange(-inaccuracy, inaccuracy), Space.World);
-            RaycastHit2D hitInfo = Physics2D.Raycast(firePoint.position, firePoint.right);
-            if (hitInfo)
+            if (Time.time - lastFired > 1 / firingSpeed)
             {
-                Debug.Log("firepoint = " + firePoint.position);
-                Debug.Log("hitinfo.point = " + hitInfo.point);
-                DamageableScript hitThing = hitInfo.transform.GetComponent<DamageableScript>();
-                if (hitThing != null)
+                currentBulletsInMag--;
+                animator.Play("RecoilAnim");
+                lastFired = Time.time;
+
+                Quaternion previousAngle = firePoint.rotation;
+                firePoint.Rotate(0, 0, (float)GetRandomNumberInRange(-inaccuracy, inaccuracy), Space.World);
+                RaycastHit2D hitInfo = Physics2D.Raycast(firePoint.position, firePoint.right);
+                if (hitInfo)
                 {
+                    Debug.Log("firepoint = " + firePoint.position);
+                    Debug.Log("hitinfo.point = " + hitInfo.point);
+                    DamageableScript hitThing = hitInfo.transform.GetComponent<DamageableScript>();
+                    if (hitThing != null)
+                    {
 
-                    hitThing.TakeDamage(damage);
+                        hitThing.TakeDamage(damage);
+                    }
+                    lineRenderer.SetPosition(0, firePoint.position);
+                    lineRenderer.SetPosition(1, hitInfo.point);
                 }
-                lineRenderer.SetPosition(0, firePoint.position);
-                lineRenderer.SetPosition(1, hitInfo.point);
+                else
+                {
+                    lineRenderer.SetPosition(0, firePoint.localPosition);
+                    lineRenderer.SetPosition(1, firePoint.position + firePoint.right * 100);
+                }
+                firePoint.rotation = previousAngle;
+                muzzleFlash.enabled = true;
+                lineRenderer.enabled = true;
+                yield return new WaitForSeconds(0.02f);
+                lineRenderer.enabled = false;
+                muzzleFlash.enabled = false;
             }
-            else
-            {
-                lineRenderer.SetPosition(0, firePoint.localPosition);
-                lineRenderer.SetPosition(1, firePoint.position + firePoint.right * 100);
-            }
-            firePoint.rotation = previousAngle;
-            muzzleFlash.enabled = true;
-            lineRenderer.enabled = true;
-            yield return new WaitForSeconds(0.02f);
-            lineRenderer.enabled = false;
-            muzzleFlash.enabled = false;
         }
-
-
+    }
+    private void Reload()
+    {
+        if (magAmount > 0)
+        {
+            magAmount--;
+            currentBulletsInMag = MaxBulletsInMag;
+        }
     }
 }

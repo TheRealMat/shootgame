@@ -11887,6 +11887,9 @@ MonoBehaviour:
   firingSpeed: 10
   muzzleFlash: {fileID: 1710972998}
   weapon: {fileID: 713050668}
+  magAmount: 2
+  MaxBulletsInMag: 50
+  currentBulletsInMag: 50
 --- !u!1 &637946636
 GameObject:
   m_ObjectHideFlags: 0
