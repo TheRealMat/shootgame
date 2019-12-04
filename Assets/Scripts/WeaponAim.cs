@@ -19,6 +19,8 @@ public class WeaponAim : MonoBehaviour
     // ideally speed of the recoil animation should be tied to the firing speed somehow
     private AnimationClip recoilAnim;
 
+    private bool isReloading = false;
+
     public int magAmount;
     public int MaxBulletsInMag;
     public int currentBulletsInMag;
@@ -37,37 +39,39 @@ public class WeaponAim : MonoBehaviour
         // gets angle between mouse and player
         var angle = Mathf.Atan2(point.y - parent.position.y, point.x - parent.position.x) * Mathf.Rad2Deg;
 
-        transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
-
-
-
-        // terrible implementation, fix asap
-        if (point.x < parent.position.x)
+        if (isReloading == false)
         {
-            parent.GetComponent<SpriteRenderer>().flipX = true;
-            transform.Rotate(180, 0, 0);
-        }
-        else if (point.x > parent.position.x)
-        {
-            parent.GetComponent<SpriteRenderer>().flipX = false;
-            transform.Rotate(0, 0, 0);
-        }
+            transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
-        // needs some kind of offset to make it feel more natural
-        transform.position = Vector2.MoveTowards(new Vector2(parent.position.x, parent.position.y), new Vector2(point.x, point.y), 0.3F);
-        if (Input.GetMouseButtonDown(0) && isAuto == false)
-        {
-            StartCoroutine(Shoot());
-        }
+            // terrible implementation, fix asap
+            if (point.x < parent.position.x)
+            {
+                parent.GetComponent<SpriteRenderer>().flipX = true;
+                transform.Rotate(180, 0, 0);
+            }
+            else if (point.x > parent.position.x)
+            {
+                parent.GetComponent<SpriteRenderer>().flipX = false;
+                transform.Rotate(0, 0, 0);
+            }
 
-        if (Input.GetMouseButton(0) && isAuto == true)
-        {
-            StartCoroutine(Shoot());
-        }
-        if (Input.GetKeyDown("r"))
-        {
-            Reload();
+            // needs some kind of offset to make it feel more natural
+            transform.position = Vector2.MoveTowards(new Vector2(parent.position.x, parent.position.y), new Vector2(point.x, point.y), 0.3F);
+
+            if (Input.GetMouseButtonDown(0) && isAuto == false)
+            {
+                StartCoroutine(Shoot());
+            }
+
+            if (Input.GetMouseButton(0) && isAuto == true)
+            {
+                StartCoroutine(Shoot());
+            }
+            if (Input.GetKeyDown("r"))
+            {
+                StartCoroutine(Reload());
+            }
         }
 
     }
@@ -82,7 +86,7 @@ public class WeaponAim : MonoBehaviour
 
     IEnumerator Shoot()
     {
-        if (currentBulletsInMag > 0)
+        if (currentBulletsInMag > 0 && isReloading == false)
         {
             if (Time.time - lastFired > 1 / firingSpeed)
             {
@@ -120,12 +124,18 @@ public class WeaponAim : MonoBehaviour
             }
         }
     }
-    private void Reload()
+    IEnumerator Reload()
     {
         if (magAmount > 0)
         {
+            isReloading = true;
+            transform.position = parent.position;
+            transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
+            animator.Play("TommyReload");
+            yield return new WaitForSeconds(1f);
             magAmount--;
             currentBulletsInMag = MaxBulletsInMag;
+            isReloading = false;
         }
     }
 }
