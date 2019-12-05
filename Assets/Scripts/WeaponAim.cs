@@ -129,10 +129,12 @@ public class WeaponAim : MonoBehaviour
         if (magAmount > 0)
         {
             isReloading = true;
+            // moving to/from this position should be gradual
             transform.position = parent.position;
             transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
             animator.Play("TommyReload");
-            yield return new WaitForSeconds(1f);
+            // should be the length of the animation
+            yield return new WaitForSeconds(2f);
             magAmount--;
             currentBulletsInMag = MaxBulletsInMag;
             isReloading = false;

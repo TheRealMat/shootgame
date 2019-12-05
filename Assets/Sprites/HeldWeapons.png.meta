@@ -29,6 +29,15 @@ TextureImporter:
   - first:
       213: -8103287437015990443
     second: HeldWeapons_1
+  - first:
+      213: -6013983041199333648
+    second: HeldWeapons_2
+  - first:
+      213: 7799952222777852580
+    second: HeldWeapons_3
+  - first:
+      213: 6250537668712810512
+    second: HeldWeapons_4
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -138,7 +147,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 4
-        y: 222
+        y: 216
         width: 25
         height: 7
       alignment: 0
@@ -159,7 +168,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 4
-        y: 211
+        y: 205
         width: 12
         height: 5
       alignment: 0
@@ -180,7 +189,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 4
-        y: 204
+        y: 198
         width: 12
         height: 5
       alignment: 0
@@ -201,7 +210,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 4
-        y: 196
+        y: 190
         width: 5
         height: 3
       alignment: 0
@@ -222,7 +231,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 4
-        y: 191
+        y: 185
         width: 5
         height: 3
       alignment: 0
@@ -243,7 +252,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 4
-        y: 184
+        y: 178
         width: 4
         height: 3
       alignment: 0
@@ -276,6 +285,90 @@ TextureImporter:
       bones: []
       spriteID: 1680023e0d05bb74c8f4f3104d66afa4
       internalID: -8103287437015990443
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HeldWeapons_0
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 237
+        width: 26
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b2b971f200c4ab548b6f66052b2b537c
+      internalID: -2246975488604004413
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HeldWeapons_2
+      rect:
+        serializedVersion: 2
+        x: 29
+        y: 216
+        width: 25
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 15005daabcdc774498ac678b4b8e0fca
+      internalID: -6013983041199333648
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HeldWeapons_3
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 174
+        width: 2
+        height: 3
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d4f2a664fb582c546ae8bc7e5b41422d
+      internalID: 7799952222777852580
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HeldWeapons_4
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 171
+        width: 3
+        height: 2
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d801cca2ac36c22459f576cff74eb161
+      internalID: 6250537668712810512
       vertices: []
       indices: 
       edges: []
