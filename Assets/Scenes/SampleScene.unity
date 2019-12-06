@@ -11960,17 +11960,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78a534e971fe5d94aab2427bb0d485b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firePoint: {fileID: 1601000078}
-  damage: 50
-  lineRenderer: {fileID: 1967541799}
-  inaccuracy: 3
-  isAuto: 1
-  firingSpeed: 10
-  muzzleFlash: {fileID: 1710972998}
   weapon: {fileID: 713050668}
-  magAmount: 2
-  MaxBulletsInMag: 50
-  currentBulletsInMag: 50
 --- !u!1 &637946636
 GameObject:
   m_ObjectHideFlags: 0
@@ -12190,6 +12180,7 @@ GameObject:
   - component: {fileID: 713050669}
   - component: {fileID: 713050670}
   - component: {fileID: 713050671}
+  - component: {fileID: 713050672}
   m_Layer: 0
   m_Name: Thomson
   m_TagString: Untagged
@@ -12284,6 +12275,28 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &713050672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 713050668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1483c015560dfab47b6d791a05e023bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  firePoint: {fileID: 1601000078}
+  damage: 50
+  lineRenderer: {fileID: 1967541799}
+  inaccuracy: 5
+  isAuto: 1
+  firingSpeed: 10
+  muzzleFlash: {fileID: 1710972998}
+  magAmount: 5
+  MaxBulletsInMag: 50
+  currentBulletsInMag: 50
 --- !u!1 &875904550
 GameObject:
   m_ObjectHideFlags: 0
