@@ -23,6 +23,13 @@ public class WeaponAim : MonoBehaviour
     void Update()
     {
 
+
+
+
+
+
+
+
         Vector3 point = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
         // gets angle between mouse and player
@@ -44,5 +51,10 @@ public class WeaponAim : MonoBehaviour
             parent.GetComponent<SpriteRenderer>().flipX = false;
             transform.Rotate(0, 0, 0);
         }
+        if (weapon.transform.parent != null)
+        {
+            weapon.GetComponent<Gun>().Test();
+        }
+
     }
 }

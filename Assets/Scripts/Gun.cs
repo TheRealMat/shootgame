@@ -20,7 +20,7 @@ public class Gun : MonoBehaviour
     public int currentBulletsInMag;
     private float lastFired;
     Transform parent;
-
+    public Transform test;
     // Update is called once per frame
     private void Start()
     {
@@ -28,14 +28,16 @@ public class Gun : MonoBehaviour
         lineRenderer.useWorldSpace = true;
         parent = transform.parent;
     }
-    void Update()
+    public void Test()
     {
         if (isReloading == false)
         {
 
-
-
-
+            if (Input.GetKeyDown("f"))
+            {
+                animator.enabled = false; // has to be disabled or position will be 0
+                transform.parent = null;
+            }
 
             if (Input.GetMouseButtonDown(0) && isAuto == false)
             {
@@ -57,7 +59,7 @@ public class Gun : MonoBehaviour
     {
         return (new System.Random().NextDouble() * (maxNumber - minNumber) + minNumber);
     }
-    IEnumerator Shoot()
+    public IEnumerator Shoot()
     {
         if (currentBulletsInMag > 0 && isReloading == false)
         {
@@ -97,7 +99,7 @@ public class Gun : MonoBehaviour
             }
         }
     }
-    IEnumerator Reload()
+    public IEnumerator Reload()
     {
         if (magAmount > 0)
         {
