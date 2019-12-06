@@ -53,7 +53,7 @@ public class WeaponAim : MonoBehaviour
         }
         if (weapon.transform.parent != null)
         {
-            weapon.GetComponent<Gun>().Test();
+            weapon.GetComponent<Gun>().Input();
         }
 
     }

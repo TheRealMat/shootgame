@@ -20,7 +20,6 @@ public class Gun : MonoBehaviour
     public int currentBulletsInMag;
     private float lastFired;
     Transform parent;
-    public Transform test;
     // Update is called once per frame
     private void Start()
     {
@@ -28,27 +27,27 @@ public class Gun : MonoBehaviour
         lineRenderer.useWorldSpace = true;
         parent = transform.parent;
     }
-    public void Test()
+    public void Input()
     {
         if (isReloading == false)
         {
 
-            if (Input.GetKeyDown("f"))
+            if (UnityEngine.Input.GetKeyDown("f"))
             {
                 animator.enabled = false; // has to be disabled or position will be 0
                 transform.parent = null;
             }
 
-            if (Input.GetMouseButtonDown(0) && isAuto == false)
+            if (UnityEngine.Input.GetMouseButtonDown(0) && isAuto == false)
             {
                 StartCoroutine(Shoot());
             }
 
-            if (Input.GetMouseButton(0) && isAuto == true)
+            if (UnityEngine.Input.GetMouseButton(0) && isAuto == true)
             {
                 StartCoroutine(Shoot());
             }
-            if (Input.GetKeyDown("r"))
+            if (UnityEngine.Input.GetKeyDown("r"))
             {
                 StartCoroutine(Reload());
             }
@@ -114,5 +113,14 @@ public class Gun : MonoBehaviour
             currentBulletsInMag = MaxBulletsInMag;
             isReloading = false;
         }
+    }
+    private void OnMouseOver()
+    {
+        if (transform.parent == null && UnityEngine.Input.GetKeyDown("e"))
+        {
+            animator.enabled = true;
+            transform.parent = GameObject.Find("WeaponAttach").transform; ;
+        }
+        
     }
 }
