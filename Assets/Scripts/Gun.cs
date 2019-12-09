@@ -26,6 +26,7 @@ public class Gun : MonoBehaviour
         animator = GetComponent<Animator>();
         lineRenderer.useWorldSpace = true;
         parent = transform.parent;
+        animator.enabled = false;
     }
     public void Input()
     {
@@ -119,7 +120,12 @@ public class Gun : MonoBehaviour
         if (transform.parent == null && UnityEngine.Input.GetKeyDown("e"))
         {
             animator.enabled = true;
-            transform.parent = GameObject.Find("WeaponAttach").transform; ;
+            parent = GameObject.Find("WeaponAttach").transform;
+            transform.parent = parent;
+            transform.position = parent.position;
+            transform.rotation = parent.rotation;
+            parent.GetComponent<WeaponAim>().weapon = gameObject;
+
         }
         
     }
