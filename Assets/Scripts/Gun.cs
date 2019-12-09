@@ -119,13 +119,16 @@ public class Gun : MonoBehaviour
     {
         if (transform.parent == null && UnityEngine.Input.GetKeyDown("e"))
         {
-            animator.enabled = true;
-            parent = GameObject.Find("WeaponAttach").transform;
-            transform.parent = parent;
-            transform.position = parent.position;
-            transform.rotation = parent.rotation;
-            parent.GetComponent<WeaponAim>().weapon = gameObject;
-
+            Vector2 playerLoc = GameObject.Find("Player").transform.position;
+            if (Vector2.Distance(transform.position, playerLoc) < 1)
+            {
+                animator.enabled = true;
+                parent = GameObject.Find("WeaponAttach").transform;
+                transform.parent = parent;
+                transform.position = parent.position;
+                transform.rotation = parent.rotation;
+                parent.GetComponent<WeaponAim>().weapon = gameObject;
+            }
         }
         
     }
