@@ -14,7 +14,7 @@ public class Gun : MonoBehaviour
     public bool isAuto = false;
     public double firingSpeed;
     public SpriteRenderer muzzleFlash;
-    private bool isReloading = false;
+    private bool isAnimating = false;
     public int magAmount;
     public int MaxBulletsInMag;
     public int currentBulletsInMag;
@@ -30,7 +30,7 @@ public class Gun : MonoBehaviour
     }
     public void Input()
     {
-        if (isReloading == false)
+        if (isAnimating == false)
         {
 
             if (UnityEngine.Input.GetKeyDown("f"))
@@ -61,10 +61,11 @@ public class Gun : MonoBehaviour
     }
     public IEnumerator Shoot()
     {
-        if (currentBulletsInMag > 0 && isReloading == false)
+        if (currentBulletsInMag > 0 && isAnimating == false)
         {
             if (Time.time - lastFired > 1 / firingSpeed)
             {
+                isAnimating = true;
                 currentBulletsInMag--;
                 animator.Play("RecoilAnim");
                 lastFired = Time.time;
@@ -96,15 +97,16 @@ public class Gun : MonoBehaviour
                 yield return new WaitForSeconds(0.02f);
                 lineRenderer.enabled = false;
                 muzzleFlash.enabled = false;
+                isAnimating = false;
             }
         }
     }
     public IEnumerator Reload()
     {
-        if (magAmount > 0)
+        if (magAmount > 0 && isAnimating == false)
         {
 
-            isReloading = true;
+            isAnimating = true;
             // moving to/from this position should be gradual. also it doesn't seem to move at all since i split the script
 
             animator.Play("TommyReload");
@@ -112,7 +114,7 @@ public class Gun : MonoBehaviour
             yield return new WaitForSeconds(2f);
             magAmount--;
             currentBulletsInMag = MaxBulletsInMag;
-            isReloading = false;
+            isAnimating = false;
         }
     }
     private void OnMouseOver()
